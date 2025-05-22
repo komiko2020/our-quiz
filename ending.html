@@ -36,7 +36,7 @@
       cursor: pointer;
     }
     .photo-of-us {
-      width: 400px;
+      width: 350px;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -49,6 +49,30 @@
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
     }
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+   }
+   .hearts span {
+     position: absolute;
+     color: #e91e63;
+     font-size: 24px;
+     animation: float 8s linear infinite;
+     top: 100%;
+     opacity: 0.8;
+}
+@keyframes float {
+  0% { transform: translateY(0) translateX(0);
+    opacity: 0.8; }
+  100% { transform: translateY(-120vh) translateX(30px);
+    opacity: 0; }
+   }
   </style>
 </head>
 <body>
@@ -63,7 +87,28 @@
   </p>
     <br><br>
     <button onclick="location.href='index.html'">Take me back to the beginning</button>
-  </div>
+  <div class="hearts">
+  <span>❤️</span>
+  <span>💖</span>
+  <span>💕</span>
+  <span>💘</span>
+  <span>💗</span>
+  <span>❤️</span>
+  <span>💓</span>
+  <span>💞</span>
+</div>
+    <script>
+  const hearts = document.querySelectorAll('.hearts span');
+  hearts.forEach((heart, index) => {
+    const randomLeft = Math.random() * 100;
+    const randomDelay = Math.random() * 5;
+    const randomSize = 16 + Math.random() * 20;
+
+    heart.style.left = `${randomLeft}%`;
+    heart.style.animationDelay = `${randomDelay}s`;
+    heart.style.fontSize = `${randomSize}px`;
+  });
+</script>
 </body>
 </html>
 
