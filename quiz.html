@@ -359,7 +359,14 @@
       hasAskedSure = true;
       btn.textContent = "Are you sure?";
     } else if (btn.textContent === "Are you sure?") {
-      container.innerHTML = `<iframe src="https://leonidos280.github.io/nopage.html" allowfullscreen></iframe>`;
+      container.innerHTML = `<iframe 
+                               src="https://leonidos280.github.io/nopage.html" allowfullscreen
+                               allowfullscreen
+                               width="100%"
+                               height="500px"
+                               frameborder="0"
+                               style="border: none;">
+                             </iframe>`;
     }
   }
 };
