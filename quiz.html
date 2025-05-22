@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Love Lore</title>
+  <link href="css2" rel="stylesheet">
+  <script src="confetti.browser.min"></script>
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background: url('IMG_2') repeat;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 500px;
+      margin: 100px auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    h1, h2, p, button {
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #e91e63;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #e91e63;
+    }
+
+    .answers button {
+      margin: 10px 5px;
+      padding: 10px 15px;
+      font-size: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+
+    .answers button.correct {
+      background-color: #a8f0c6;
+    }
+
+    .answers button.wrong {
+      background-color: #ffcccc;
+      animation: shake 0.2s ease-in-out 0s 2;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    #nextBtn {
+      margin-top: 20px;
+      display: none;
+      background-color: #a8f0c6;
+      padding: 10px 20px;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #e91e63;
+      font-size: 15px;
+    }
+
+    #spawnBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #dbeafe;
+      padding: 8px;
+      border: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    .spawn-img {
+      position: absolute;
+      width: 80px;
+      z-index: 999;
+    }
+
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<button id="spawnBtn" onclick="spawnImage()">Spawn</button>
+
+<div class="container" id="quizContainer">
+  <div id="quizContent"></div>
+  <button id="nextBtn" onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+  let score = 0;
+  let questionIndex = 0;
+  let currentStep = 0;
+  let counting = false;
+  let hasAskedSure = false;
+  const sound = new Audio("yippee-147032");
+
+  const quizData = [
+    {
+      question: "When did we start dating?",
+      answers: [
+        { text: "February 15 2024", correct: false },
+        { text: "February 10 2024", correct: false },
+        { text: "February 5 2024", correct: true },
+        { text: "February 25 2024", correct: false }
+      ],
+      type: "single"
+    },
+    {
+      question: "Where did we go on our first date?<br>(you better remember the order)",
+      correctSequence: [
+        "Willy Wonka movie",
+        "Ice cream",
+        "Bowling arena",
+        "Pizza on the rooftop"
+      ],
+      type: "order"
+    },
+    {
+      question: "What food do we always end up craving?",
+      answers: [
+        { text: "Pizza", correct: false },
+        { text: "Sushi", correct: false },
+        { text: "Tacos", correct: false },
+        { text: "Ice cream", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "Which one of the following is “our song”?",
+      answers: [
+        { text: "Perfect by Ed Sheeran", correct: false },
+        { text: "Slow hands by Niall Horan", correct: true },
+        { text: "Gaajuvaka Pilla by R.P Patnaik", correct: false },
+        { text: "Classic by MKTO", correct: false }
+      ],
+      type: "single"
+    },
+    {
+      question: "Which side of the bed do you always sleep on?",
+      answers: [
+        { text: "Left", correct: false },
+        { text: "Right", correct: false },
+        { text: "Middle", correct: false },
+        { text: "Your side is my side <3", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "What’s something we use when we’re mad but pretending not to be?",
+      answers: [
+        { text: "Okay then :)", correct: false },
+        { text: "It’s fine", correct: false },
+        { text: "Sare 👍", correct: true },
+        { text: "Do whatever you want", correct: false }
+      ],
+      type: "single"
+    },
+    {
+      question: "Which of the following is MY favourite football team?",
+      answers: [
+        { text: "Real Madrid", correct: false },
+        { text: "Chelsea", correct: false },
+        { text: "Arsenal", correct: true },
+        { text: "Barcelona", correct: false }
+      ],
+      type: "single"
+    },
+    {
+      question: "What’s my fav/most used pet name for you?",
+      answers: [
+        { text: "Baby", correct: false },
+        { text: "Darling", correct: false },
+        { text: "Daddy XD", correct: false },
+        { text: "Ammu/Dhanusha/Dhanu/kannamma/dolling/bujji/bangaram/my WHOLE world", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "What’s our fav weekend plan we always dream about?",
+      answers: [
+        { text: "Go out on a fancy date", correct: false },
+        { text: "Stay in to watch movies with unlimited cuddles + snacks", correct: true },
+        { text: "Clean the house", correct: false },
+        { text: "Hang out with friends", correct: false }
+      ],
+      type: "single"
+    },
+    {
+      question: "What’s my signature study move?",
+      answers: [
+        { text: "Open 10 tabs and panic", correct: false },
+        { text: "Write one line and reward myself", correct: false },
+        { text: "Clean the room instead of studying", correct: false },
+        { text: "Cry and ask you for help", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "But who’s the genius that gets more marks? 🤭",
+      answers: [
+        { text: "Spoo duh", correct: true },
+        { text: "My amazing girlfriend", correct: true },
+        { text: "Bullamma", correct: true },
+        { text: "Spoorthi", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "What’s the thing I love the most about you?",
+      answers: [
+        { text: "Your smile :)", correct: false },
+        { text: "Your eyes 👀", correct: false },
+        { text: "Your 🍑", correct: false },
+        { text: "Your hair", correct: false },
+        { text: "Everything", correct: false },
+        { text: "You", correct: true }
+      ],
+      type: "single"
+    },
+    {
+      question: "Would I be able to live without you?",
+      answers: [
+        { text: "No", correct: true },
+        { text: "Yes", correct: false },
+        { text: "NOOO", correct: true },
+        { text: "Nahi", correct: true }
+      ],
+      type: "single",
+      special: "areYouSure"
+    },
+    {
+      question: "Will you be my forever?",
+      answers: [
+        { text: "Yesss!", correct: true },
+        { text: "No", correct: false }
+      ],
+      type: "final"
+    }
+  ];
+
+  function updateScoreDisplay() {
+    document.getElementById("score").innerText = `Score: ${score}`;
+  }
+
+  function confettiRain() {
+    const duration = 10000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const interval = setInterval(() => {
+      if (Date.now() >= animationEnd) return clearInterval(interval);
+      confetti({ ...defaults, particleCount: 10, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+    }, 250);
+  }
+
+  function spawnImage() {
+    const images = [
+      "IMG_3",
+      "IMG_4",
+      "IMG_5",
+      "IMG_6",
+      "IMG_7",
+      "giphy2",
+      "i-love-you-too-heart",
+      "milk-and-mocha"
+    ];
+    const img = document.createElement("img");
+    img.src = images[Math.floor(Math.random() * images.length)];
+    img.className = "spawn-img";
+    img.style.top = `${Math.random() * window.innerHeight}px`;
+    img.style.left = `${Math.random() * window.innerWidth}px`;
+    document.body.appendChild(img);
+  }
+
+  function nextQuestion() {
+    const container = document.getElementById("quizContent");
+    const q = quizData[questionIndex];
+    currentStep = 0;
+    document.getElementById("nextBtn").style.display = "none";
+
+    if (!q) return;
+
+    if (q.type === "final") {
+      document.getElementById("spawnBtn").style.display = "none";
+      const html = `
+        <img src="giphy1" style="height:80px"><br><br>
+        <h1>${q.question}</h1>
+        <div class="answers" id="answerBox"></div>
+      `;
+      container.innerHTML = html;
+      const answerBox = document.getElementById("answerBox");
+
+      q.answers.forEach(ans => {
+        const btn = document.createElement("button");
+        btn.textContent = ans.text;
+        btn.onclick = () => {
+         if (ans.correct) {
+    score++;
+    updateScoreDisplay();
+    sound.play();
+    confettiRain();
+    counting = true;
+    document.getElementById("spawnBtn").style.display = "inline-block";
+    setInterval(() => {
+      if (counting) {
+        score++;
+        updateScoreDisplay();
+      }
+    }, 100);
+
+    // Show ending message button after 5 seconds
+    setTimeout(() => {
+      const endBtn = document.createElement("button");
+      endBtn.textContent = "To Ending Message ❤️";
+      endBtn.style.marginTop = "20px";
+      endBtn.style.backgroundColor = "#ffcccb";
+      endBtn.style.fontSize = "12px";
+      endBtn.onclick = () => {
+        window.location.href = "ending.html";
+      };
+      container.appendChild(endBtn);
+    }, 5000);
+
+  } else {
+    if (btn.textContent === "No" && !hasAskedSure) {
+      hasAskedSure = true;
+      btn.textContent = "Are you sure?";
+    } else if (btn.textContent === "Are you sure?") {
+      container.innerHTML = `<iframe src="nopage.html" allowfullscreen></iframe>`;
+    }
+  }
+};
+        answerBox.appendChild(btn);
+      });
+      return;
+    }
+
+    let html = `
+      <img src="giphy1" alt="Bear" width="100" />
+      <h1>How Well Do You Know Our Love Story?</h1>
+      <p class="question">${q.question}</p>
+      <div class="answers" id="answerArea"></div>
+    `;
+    container.innerHTML = html;
+
+    const answerArea = document.getElementById("answerArea");
+
+    if (q.type === "single") {
+      let answered = false;
+      q.answers.forEach(a => {
+        const btn = document.createElement("button");
+        btn.textContent = a.text;
+        btn.onclick = () => {
+          if (a.correct && !answered) {
+            score++;
+            btn.classList.add("correct");
+            answered = true;
+            document.getElementById("nextBtn").style.display = "inline-block";
+          } else if (!a.correct) {
+            score--;
+            btn.classList.add("wrong");
+          }
+          updateScoreDisplay();
+        };
+        answerArea.appendChild(btn);
+      });
+    }
+
+    if (q.type === "order") {
+      const jumbled = [...q.correctSequence].sort(() => Math.random() - 0.5);
+      jumbled.forEach(item => {
+        const btn = document.createElement("button");
+        btn.textContent = item;
+        btn.onclick = () => {
+          if (item === q.correctSequence[currentStep]) {
+            if (!btn.classList.contains("correct")) {
+              btn.classList.add("correct");
+              score++;
+              currentStep++;
+              if (currentStep === q.correctSequence.length) {
+                document.getElementById("nextBtn").style.display = "inline-block";
+              }
+            }
+          } else {
+            if (!btn.classList.contains("correct")) {
+              btn.classList.add("wrong");
+              score--;
+            }
+          }
+          updateScoreDisplay();
+        };
+        answerArea.appendChild(btn);
+      });
+    }
+
+    questionIndex++;
+    updateScoreDisplay();
+  }
+
+  window.onload = nextQuestion;
+</script>
+
+</body>
+</html>
