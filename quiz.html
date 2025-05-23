@@ -384,6 +384,8 @@
     container.innerHTML = html;
 
     const answerArea = document.getElementById("answerArea");
+    const correctSound = document.getElementById("correctSound");
+    const wrongSound = document.getElementById("wrongSound");
 
     if (q.type === "single") {
       let answered = false;
@@ -439,6 +441,8 @@
 
   window.onload = nextQuestion;
 </script>
+ <audio id="correctSound" src="Correct.mp3" preload="auto"></audio>
+ <audio id="wrongSound" src="Wrong.mp3" preload="auto"></audio> 
 
 </body>
 </html>
