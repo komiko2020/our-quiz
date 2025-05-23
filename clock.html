@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Forever Clock </title>
+
+  <!-- Pixel Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+    margin: 0;
+    font-family: 'Press Start 2P', cursive;
+    background: url('https://i.pinimg.com/736x/8f/88/6b/8f886b949aa2d66217fee5b1612346c6.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #4a4a4a;
+    text-align: center;
+  }
+
+    h1 {
+      font-size: 0.8rem;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+      line-height: 1.8;
+  }
+    p {
+      font-size: 0.7rem;
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+  }
+    .timer {
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      gap: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background: #fff;
+      padding: 18px 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .segment {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-shadow: 2px 2px 0 #ffe0e0;
+    }
+
+    .segment-label {
+      font-size: 0.5rem;
+      color: #888;
+      margin-top: 8px;
+      font-weight: normal;
+    }
+
+    button {
+      margin-top: 25px;
+      font-family: 'Press Start 2P', cursive;
+      background-color: #ffc0cb;
+      color: white;
+      padding: 15px 25px;
+      font-size: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 #e91e63;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #f06277;
+    }
+    .container {
+     background: #fff1f5;
+     padding: 40px 30px;
+     border-radius: 16px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+     text-align: center;
+     max-width: 400px;
+     width: 90%;
+    }
+    .heart-gif {
+      margin-top: 20px;
+      display: block;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin: 24px auto 0 auto;
+      max-width: 125px;
+      height: 125px;
+      border-radius: 12px;
+   }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1> Time’s been ticking since you stole my heart...  </h1>
+
+  <div class="timer" id="timer">
+    <div class="segment">
+      <div id="days">0</div>
+      <div class="segment-label">DAYS</div>
+    </div>
+    <div class="segment">
+      <div id="hours">00</div>
+      <div class="segment-label">HRS</div>
+    </div>
+    <div class="segment">
+      <div id="minutes">00</div>
+      <div class="segment-label">MIN</div>
+    </div>
+    <div class="segment">
+      <div id="seconds">00</div>
+      <div class="segment-label">SEC</div>
+    </div>
+  
+</div>
+
+    <p>When the timer hits forever, I hope you’ll be right there with me.</p>
+    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGlwaWdpcmUyNzI2ZmxmY3VwOXdycDgwNmFkNXI0dThka3c5MHQ3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7jOnwF6D1ftHdCKXCL/giphy.gif" alt="Cute GIF" class="heart-gif" />
+
+  <button onclick="enterSite()"> Ready to Play? </button>
+
+  <script>
+    const startDate = new Date('2024-02-05T00:00:00');
+
+    function pad(num) {
+      return num.toString().padStart(2, '0');
+    }
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = pad(hours);
+      document.getElementById('minutes').textContent = pad(minutes);
+      document.getElementById('seconds').textContent = pad(seconds);
+    }
+
+    function enterSite() {
+      window.location.href = "quiz.html"; // Update this to your quiz file if needed
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  </script>
+
+</body>
+</html>
