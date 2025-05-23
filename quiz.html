@@ -394,11 +394,13 @@
         btn.textContent = a.text;
         btn.onclick = () => {
           if (a.correct && !answered) {
+            correctSound.play(); // ✅ play correct sound
             score++;
             btn.classList.add("correct");
             answered = true;
             document.getElementById("nextBtn").style.display = "inline-block";
           } else if (!a.correct) {
+            wrongSound.play(); // ✅ play wrong sound
             score--;
             btn.classList.add("wrong");
           }
