@@ -417,6 +417,7 @@
         btn.textContent = item;
         btn.onclick = () => {
           if (item === q.correctSequence[currentStep]) {
+            correctSound.play(); // ✅ play correct sound
             if (!btn.classList.contains("correct")) {
               btn.classList.add("correct");
               score++;
@@ -427,6 +428,7 @@
             }
           } else {
             if (!btn.classList.contains("correct")) {
+              wrongSound.play(); // ✅ play wrong sound
               btn.classList.add("wrong");
               score--;
             }
