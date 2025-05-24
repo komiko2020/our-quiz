@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letters</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(180deg, #FFC8DD 0%, #ffc0cb 100%); 
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    main {
+      max-width: 650px;
+      width: 100%;
+      background-color: #BDE0FE; /* Soft Blue */
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 40px;
+      letter-spacing: 0.15em;
+      color: #777; /* Sky Blue */
+      text-align: center;
+    }
+
+    .letter-entry {
+      width: 100%;
+      background: #ffffff;
+      border-left: 5px solid #CDB4DB; /* Lilac */
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .letter-entry:hover {
+      border-color: #FFAFCC;
+      background-color: #fff5f7;
+    }
+
+    .letter-date {
+      font-size: 11px;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .letter-message {
+      max-height: 0;
+      overflow: hidden;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.6;
+      transition: max-height 0.5s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .letter-entry.expanded .letter-message {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 12px;
+    }
+
+    .letter-message p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Letters & Time</h1>
+
+    <div class="letter-entry" onclick="toggleLetter(this)">
+      <div class="letter-date">FEB 5, 2024</div>
+      <div class="letter-message">
+        <p>Our first date, and the start of something beautiful. I remember your smile like it was yesterday.</p>
+      </div>
+    </div>
+
+    <div class="letter-entry" onclick="toggleLetter(this)">
+      <div class="letter-date">MAR 1, 2024</div>
+      <div class="letter-message">
+        <p>I love the way you say my name. You're my safe place and my sweetest adventure.</p>
+      </div>
+    </div>
+
+    <div class="letter-entry" onclick="toggleLetter(this)">
+      <div class="letter-date">APR 14, 2024</div>
+      <div class="letter-message">
+        <p>Even when you're away, my heart feels full because you're mine. Can’t wait to hug you again.</p>
+      </div>
+    </div>
+
+    <div class="letter-entry" onclick="toggleLetter(this)">
+      <div class="letter-date">MAY 24, 2025</div>
+      <div class="letter-message">
+        <p>You’re my favorite chapter in every book, my favorite lyric in every song. This site is for you — always.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleLetter(el) {
+      el.classList.toggle('expanded');
+    }
+  </script>
+</body>
+</html>
