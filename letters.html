@@ -80,6 +80,24 @@
 
     .letter-message p {
       margin: 0;
+    .back-btn {
+  margin-top: 30px;
+  background-color: #A2D2FF;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #CDB4DB;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.back-btn:hover {
+  background-color: #CDB4DB;
+  box-shadow: 4px 4px 0 #A2D2FF;
+  color: white;
     }
   </style>
 </head>
@@ -114,12 +132,16 @@
         <p>You’re my favorite chapter in every book, my favorite lyric in every song. This site is for you — always.</p>
       </div>
     </div>
+    <button class="back-btn" onclick="goBack()">← Back</button>
   </main>
 
   <script>
     function toggleLetter(el) {
       el.classList.toggle('expanded');
     }
+    function goBack() {
+  window.location.href = 'index.html';
+   }
   </script>
 </body>
 </html>
